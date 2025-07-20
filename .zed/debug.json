@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Debug with clang",
+    "build": {
+      "command": "clang",
+      "args": [
+        "-g", // Generate debug symbols
+        "$ZED_WORKTREE_ROOT/test.c",
+        "-o",
+        "$ZED_WORKTREE_ROOT/prog"
+      ],
+      "cwd": "$ZED_WORKTREE_ROOT"
+    },
+    "program": "$ZED_WORKTREE_ROOT/prog",
+    "request": "launch",
+    "adapter": "CodeLLDB"
+  }
+]

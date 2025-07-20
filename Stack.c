@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define INITIAL_CAPACITY 8
 #define GROWTH_FACTOR 2
@@ -11,39 +12,38 @@ typedef struct {
   void *data;
 } Stack;
 
+int stack_init(Stack *s, size_t element_size) {
+  if (!s || element_size == 0) return 0;
 
+  s->capacity = INITIAL_CAPACITY;
+  s->size = 0;
+  s->element_size = element_size;
 
-int stack_init(Stack * s, size_t element_size) {
-    if (!s || element_size == 0) return 0;
+  s->data = malloc(s->capacity * s->element_size);
+  if (!s->data) return 0;
+  return 1;
+}
 
-    s->capacity = INITIAL_CAPACITY;
-    s->size = 0;
-    s->element_size = element_size;
+int stack_push(Stack *s, const void *element) {
+  if (s->size == s->capacity) {
+    s->capacity *= GROWTH_FACTOR;
+    void *new_data = realloc(s->data, s->capacity * s->element_size);
+    s->data = new_data;
+  }
 
-    s->data = malloc(s->capacity * s->element_size);
-    if (!s->data) return 0;
+  void *target = (char *)s->data + (s->size * s->element_size);
+  memcpy(target, element, s->element_size);
+  s->size += 1;
+  return 1;
+}
 
+int stack_pop(Stack * s, void * element) {
+    if (s->size == 0) return 0;
+    s->size -= 1;
+    void * source = (char *)s->data + (s->size * s->element_size);
+    memcpy(element, source, s->element_size);
     return 1;
-}
-
-int stack_push(Stack * s, const void * element) {
-    if (s->size == s->capacity) {
-        size_t new_capacity = s->capacity * GROWTH_FACTOR;
-        void * new_data = realloc(s->data, new_capacity);
-        if (!new_data) return 0;
-
-        s->data = new_data;
-        s->capacity = new_capacity;
-    }
-
-    void * target = (char *) s-> data;
-}
-
-int main() {
-
-
-
-    return 0;
-
 
 }
+
+int main() { return 0; }
